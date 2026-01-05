@@ -1,3 +1,6 @@
+#Region ;**** Directives created by AutoIt3Wrapper_GUI ****
+#AutoIt3Wrapper_Icon=D:\icon\Screenshot3verlaufALL.ico
+#EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
 ; Main_1FileTxt_3040.au3
 ; simplified file logic with logging // idxq number: ini index=

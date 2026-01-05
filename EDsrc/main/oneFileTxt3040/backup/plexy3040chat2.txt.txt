@@ -1,0 +1,376 @@
+
+
+[0]
+; alle gui var die gelesen werden sollen und alle setting var die live gelesen werden sollen sinnvollen parameter kommen alle in zwei gleich grosse arrys maybe 111 oder 222 elemente egal besser kommt spaeter erstmal sichere bombenfeste funktion und nie frage was kommt nun woher , 
+
+,,, Global 2 2d arrays key value oder 1 d array mit unpair is key paitr is value und in allen schleifen step 2 einfach oder ? alle param mit array add dann braucht man sich nicht um indizies kuemmern , die get func ist schon da glaube fuer 2d array ,,,einfach alles was gebraucht wird rein 
+
+in die zwei neuen Global REST API  arrays  $arSETTING und in  $arGUI   und set0 1 2  werden array elemente kommt ins grosse setting Array  $arSETTING und in  $arGUIund ins neue GUI Array  ,,, bei settings ende wird settings komplett in gui array copy und bei gui edit ende or update gui wird das GUI array komplett in settings array copy ,,, im REST API Global settings array     kommt nur das actuelle preset aus settings.ini ist sinnvoll und nicht alle settings ,,, die hidden module umschalten muss nicht live funktionieren 
+
+
+,,, welche parameter braucht es:
+
+mod0 ist pack  !and unpack! und check binary save , aber anzeige der file anzahl gesamt und bytes gesamt pack unpack also klar die zwei folder , macht ja nur in mod0 sinn ,,, 
+mod0 input ist only ParentFolder[0] daraus wird folder logig berechnet und in gui geschrieben nur 2 mal in 0 und 1 Folder[0] new name mybe later ParentFolder[0] 
+
+
+
+code-file-folder: s                                                                                                              
+sobald s und idx 3042  nummer bekannt ist wird in set[0] und set[1]  die file folder eingetragen und in API arrays
+
+p/s/~~code~~files~~
+
+p/s/
+p/s_3042/pack/1file.txt
+p/s_3042/unpack/s/
+,,, das letzte backslash s/   muss im edit in var stehen sonst wird im GUI der uebergeordnete folder geoeffnet
+
+
+mod1 liesst nur das copierte von mod0  fileName / file old und in section 2 und kann edit werdn 
+
+
+mod2 liesst die 4 folder  secondDir   file second file in gui 
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Example Preset with NEW field names
+
+; Module ON/OFF Switches (3x)
+Set0Active=1
+Set1Active=1
+Set2Active=0
+
+
+
+; 3 edit buttn wie 3040 ,,, 
+;aber jetzt daneben rechts aussen idx edit mit buttn wie 3040
+
+; Extensions (3x)   wie 3040 aber alle gleich extUSE (old extFilter braucht nicht grau einfach gleich   ,,, und wie in 3040 update buttn (nun 3) updaten die ganze GUI 
+ExtInclude=.ini.au3.txt.css.ps1.json.mhtml.session
+ExtExclude=.png.ico.jpg.jpeg
+;ExtFilter old new extUSE 
+ExtUSE=ini.au3.txt.css.ps1.json.mhtml.session                                               
+
+
+
+AllCodeFile=1file.txt
+; 3x is 12 param 
+;old names 
+Set0_Folder    = 
+Set0_SubDir    = 
+Set0_File      = 
+Set0_SecondFile= 
+;new names
+ParentFolder[0]=Q:/OneFileTxt3040/EDsrc/plexy
+SecondDir[0]   =Q:/OneFileTxt3040/EDsrc/plexy
+FileName[0]    =Q:/OneFileTxt3040/EDsrc/plexy_3050/pack/1file.txt
+SecondFile[0]  =Q:/OneFileTxt3040/EDsrc/plexy_3050/pack/1file.txt
+
+
+
+
+
+; file folder 3x je  new 4 edit
+;set0 1 2  werden array elemente kommt ins grosse setting Array  $arSETTING und in  $arGUIund ins neue GUI Array 
+; Set0 - MOD0 Pack !AND unpack! (new 4 fields)
+Set0_Folder    = 
+Set0_SubDir    = 
+Set0_File      = 
+Set0_SecondFile= 
+
+; Set1 - MOD1 Unpack (4 fields)
+
+; Set2 - MOD2-UNI Universal (4 fields)
+
+
+; Index (1x)
+Index=152
+
+; Other
+Mode=0
+AddMarkerComments=0
+MarkerUseTyp1json=0
+
+
+
+
+
+
+
+;;// ******************************************************************************************************************************
+;;// ******************************************************************************************************************************
+;;// ******************************************************************************************************************************
+
+[Session]
+Initialized=1
+
+; Module ON/OFF Switches (3x)
+Set0Active=1
+Set1Active=1
+Set2Active=0
+
+
+; Extensions (3x)
+ExtInclude=.ini.au3.txt.css
+ExtExclude=.npn
+ExtFilter=ini.au3.txt.css
+
+; Index (1x)
+Index=3042
+
+; Other
+Mode=1
+AddMarkerComments=0
+MarkerUseTyp1json=0
+
+
+[Metadata]
+NextPresetNumber=4
+
+
+
+
+
+
+[2]
+Set0Active=1
+Set1Active=1
+Set2Active=0
+
+Buttn_Folder=ParentFolder 
+Buttn_SubDir=SecondDir
+Buttn_File=ParentFolder 
+
+
+
+Set0_Folder=Q:/OneFileTxt3040/EDsrc/plexy
+Set0_SubDir=Q:/OneFileTxt3040/EDsrc/plexy
+Set0_File  =Q:/OneFileTxt3040/EDsrc/plexy_3050/pack/1file.txt
+
+Set1_Folder=D:/1p/s_13/unpack/s
+Set1_SubDir=D:\1p\s
+Set1_File=D:/1p/s_13/pack/1file.txt
+
+Set2_Folder=
+Set2_SubDir=
+Set2_File=
+ExtInclude=.ini.au3.txt.css
+ExtExclude=.npn
+ExtFilter=ini.au3.txt.css
+Index=13
+Mode=0
+AddMarkerComments=0
+MarkerUseTyp1json=0
+
+
+
+[old]
+InParent=Q:\examplepath
+InSub=examplepath
+OutParent=
+OutSub=
+AllCodeFile=Q:\examplepath\1021_1fileTxtIn1\1file.txt
+AllCodeFileRead=
+ExtInclude=.ini.au3.txt.css
+ExtExclude=.npn
+ExtFilter=ini.au3.txt.css
+AddMarkerComments=0
+Mode=0
+Index=13
+MarkerUseTyp1json=0
+
+[3]
+Set0Active=1
+Set1Active=1
+Set2Active=0
+
+AllCodeFile=1file.txt
+
+ParentFolder0=Q:/OneFileTxt3040/EDsrc/plexy
+SecondFolder0=Q:/OneFileTxt3040/EDsrc/plexy
+FileName0=Q:/OneFileTxt3040/EDsrc/plexy_3050/pack/1file.txt
+
+Set0_Folder=D:/1p/s
+Set0_SubDir=D:\1p\s
+Set0_File=D:/1p/s_13/pack/1file.txt
+Set1_Folder=D:/1p/s_13/unpack/s
+Set1_SubDir=D:\1p\s
+Set1_File=D:/1p/s_13/pack/1file.txt
+Set2_Folder=
+Set2_SubDir=
+Set2_File=
+ExtInclude=.ini.au3.txt.css
+ExtExclude=.npn
+ExtFilter=ini.au3.txt.css
+Index=13
+Mode=0
+AddMarkerComments=0
+MarkerUseTyp1json=0
+
+
+mod1 liesst nur section 0 parentFolder  eg. p/s  und idx ,,, und sobald edit aufhoert oder enter oder update buttn von ext dann werden die folder in section 0 und section 1 geschrieben     8 :
+
+section 0  1  : folder folder file file  1 2 3 4:
+
+section[0]   mod0
+p/s
+p/s_3040/unpack/s
+p/s_3040/pack/1file.txt
+[empty future for mod2UNI  ] 
+
+
+section[1]   mod1
+p/s
+p/s_3040/unpack/s
+p/s_3040/pack/1file.txt
+[empty future for mod2UNI  ] 
+
+section[2]   mod2UNI
+
+ empty
+
+
+
+
+mod1 liesst nur das feld section [1]   file feld3 , dann ist das natuerlich eine ausnahme in mod1 soll das feld section 1 feld 3 file nicht vom settings array oder von den feldern von section 0 ueberschreieben werden , weil mod2 ist ja nur dazu da eine anderes file als mod0 zu entpacken , entscheide selber ueber die logig , das section 1 feld 3 file darf nur von mod 0 oder mit editieren veraendert werden  NICHT mit update Buttn und NICHT von settings oder preset , ist die einzige sinnvolle ausnahme 
+
+
+und dann auch von arGUI zu arSETTING  copy (einfach immer alles arry copy bis es spaeter optimiert wird eventuell , ich freue mich wenn die phasen zustaende immer glasklar sind 
+
+
+
+,,, settings  manager functioniert ,,,   marker erzeugen pack unpack functioniert  ist noch nicht binary save ,,, check mod0  pack unpack   , ist immer falsch anzeige fehlt noch ,,, 
+
+
+,,, die loop muss NUR externe func aufrufe enthalten keine code ausfuehrung , speed ist erstmal egal , alles sauber trennen 
+
+,,, try best practice , ich vermute in anderen modulen  koennte auch noch ein gameloop sinnvoll sein , weiss nicht entscheide du 
+
+
+,,, noch mal ziel schoengetrennte module , consistente var namen die ersten 2 ..4..5.. buchstaben sollten gleich sein und beziehung klar machen ,,, das ein aus blenden der gui 3 sections functioniert super ,,, der close buttn ist zu breit und duenn mach mal schoener nach mitte oder rechts 
+
+
+,,, noch fragen,,, bitte genau sein und schnell die gui wiederherstellen , fragen?
+
+
+
+
+ }}}}
+ {
+   mod1 liesst nur section 0 parentFolder  eg. p/s  und idx ,,, und sobald edit aufhoert oder enter oder update buttn von ext dann werden die folder in section 0 und section 1 geschrieben     8 :
+
+section 0  1  : folder folder file file  1 2 3 4:
+
+section[0]   mod0
+p/s
+p/s_3040/unpack/s
+p/s_3040/pack/1file.txt
+[empty future for mod2UNI  ] 
+
+
+section[1]   mod1
+p/s
+p/s_3040/unpack/s
+p/s_3040/pack/1file.txt
+[empty future for mod2UNI  ] 
+
+section[2]   mod2UNI
+
+ empty
+
+
+
+
+mod1 liesst nur das feld section [1]   file feld3 , dann ist das natuerlich eine ausnahme in mod1 soll das feld section 1 feld 3 file nicht vom settings array oder von den feldern von section 0 ueberschreieben werden , weil mod2 ist ja nur dazu da eine anderes file als mod0 zu entpacken , entscheide selber ueber die logig , das section 1 feld 3 file darf nur von mod 0 oder mit editieren veraendert werden  NICHT mit update Buttn und NICHT von settings oder preset , ist die einzige sinnvolle ausnahme 
+
+
+und dann auch von arGUI zu arSETTING  copy (einfach immer alles arry copy bis es spaeter optimiert wird eventuell , ich freue mich wenn die phasen zustaende immer glasklar sind 
+
+
+
+,,, settings  manager functioniert ,,,   marker erzeugen pack unpack functioniert  ist noch nicht binary save ,,, check mod0  pack unpack   , ist immer falsch anzeige fehlt noch ,,, 
+
+
+,,, die loop muss NUR externe func aufrufe enthalten keine code ausfuehrung , speed ist erstmal egal , alles sauber trennen 
+
+,,, try best practice , ich vermute in anderen modulen  koennte auch noch ein gameloop sinnvoll sein , weiss nicht entscheide du 
+
+
+,,, noch mal ziel schoengetrennte module , consistente var namen die ersten 2 ..4..5.. buchstaben sollten gleich sein und beziehung klar machen ,,, das ein aus blenden der gui 3 sections functioniert super ,,, der close buttn ist zu breit und duenn mach mal schoener nach mitte oder rechts 
+
+
+,,, noch fragen,,, bitte genau sein und schnell die gui wiederherstellen , fragen?
+
+
+ Sections: 0=MOD0 (p/s → p/s_idx/unpack/s + 1file.txt), 1=MOD1 (read File3 only!), 2=MOD2
+Array-Sync: Voll-Copy $arGUI ↔ $arSETTING (außer Section1-File3)
+MOD1 Exception: File3 nur manuell edit/MOD0-copy (no UpdateBtn/Settings)
+Loop: PURE Func-Calls (GameLoop() → Module_GameLoop())
+Slashes: Intern "/" , Trailing auto
+Binary: PackFiles() FileOpen(16) fix next
+Display: File/Bytes count in Tooltip
+Close: Rechts, 120x40px
+Var-Namen: set0Folder, set1File3 (first4 equal)
+Toggle: Show/Hide sections live
+
+
+////marker_begin file Main_OneFileTxt3044.au3
+Global $version = 3044
+
+#include <GUIConstantsEx.au3>
+#include <EditConstants.au3>
+#include <WindowsConstants.au3>
+#include <Array.au3>
+#include <MsgBoxConstants.au3>
+
+#include "SettingsManager.au3"
+#include "GuiCore.au3"
+#include "FileFolderPack.au3"
+
+Global $ghGUI
+Global $gaSetActive[3] = [1, 1, 0]
+
+Init()
+While 1
+    GameLoop()
+    Sleep(11)
+WEnd
+
+Func Init()
+    Settings_Init(@ScriptDir & "\config.ini")
+    Settings_LoadPreset("Session")
+    CreateMainGUI()
+EndFunc
+
+Func GameLoop()
+    GuiCore_EventLoop()
+EndFunc
+
+Func Close()
+    Settings_SaveAll()
+    GUIDelete($ghGUI)
+    Exit
+EndFunc
+////marker_end file Main_OneFileTxt3044.au3
+
+
+
+
+
+
+
+
+ alle files , es wurde abgebrochen: continue
+
+ ////marker_begin file SettingsManager.au3
+Global $gaConfig
+Global $arSETTING[100]
+Global $arGUI[100]
+
+Func Settings_Init($sFile)
+    $gaConfig
+
+
+
+
+

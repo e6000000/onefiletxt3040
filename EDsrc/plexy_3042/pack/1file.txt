@@ -1,0 +1,157 @@
+;;;
+;;;; V3042: File-Namen mit Version + alle Fixes
+;;;
+
+////marker_begin file Main_OneFileTxt3042.au3
+Global $version = 3042
+
+#include <GUIConstantsEx.au3>
+#include <EditConstants.au3>
+#include <WindowsConstants.au3>
+#include <Array.au3>
+#include <MsgBoxConstants.au3>
+
+#include "SettingsManager.au3"
+#include "GuiCore.au3"
+#include "FileFolderPack.au3"
+
+Global $ghGUI
+Global $gaSetActive[3] = [1, 1, 0]
+
+Init()
+While 1
+    GameLoop()
+    Sleep(11)
+WEnd
+
+Func Init()
+    Settings_Init(@ScriptDir & "\config.ini")
+    CreateMainGUI()
+EndFunc
+
+Func GameLoop()
+    Local $iMsg = GUIGetMsg()
+    Switch $iMsg
+        Case $GUI_EVENT_CLOSE
+            Close()
+        Case $gidBtnMod0
+            FileFolderPack_Mod0()
+        Case $gidBtnMod1
+            FileFolderPack_Mod1()
+    EndSwitch
+EndFunc
+
+Func Close()
+    Settings_SaveAll()
+    GUIDelete($ghGUI)
+    Exit
+EndFunc
+////marker_end file Main_OneFileTxt3042.au3
+
+////marker_begin file SettingsManager.au3
+Global $gaConfig
+Global $gaSettings[50][2]
+
+Func Settings_Init($sFile)
+    $gaConfig = $sFile
+    Settings_Defaults()
+EndFunc
+
+Func Settings_Defaults()
+    Settings_Set("Index", "1014")
+    Settings_Set("ExtIncl", ".au3|.txt|.md")
+    Settings_Set("ExtExcl", "")
+    Settings_Set("ExtUse", ".au3.txt")
+    For $i = 0 To 2
+        Settings_Set("Set" & $i & "Active", $i <= 1)
+        Settings_Set("Set" & $i & "Parent", "")
+        Settings_Set("Set" & $i & "SubDir", "")
+        Settings_Set("Set" & $i & "FileName", "")
+    Next
+EndFunc
+
+Func Settings_Get($sKey)
+    For $i = 0 To UBound($gaSettings) - 1
+        If $gaSettings[$i][0] = $sKey Then
+            Return $gaSettings[$i][1]
+        EndIf
+    Next
+    Return ""
+EndFunc
+
+Func Settings_Set($sKey, $sValue)
+    For $i = 0 To UBound($gaSettings) - 1
+        If $gaSettings[$i][0] = $sKey Then
+            $gaSettings[$i][1] = $sValue
+            Return
+        EndIf
+    Next
+EndFunc
+
+Func Settings_SaveAll()
+    ; Real INI save next version
+EndFunc
+////marker_end file SettingsManager.au3
+
+////marker_begin file GuiCore.au3
+Global $gidBtnMod0
+Global $gidBtnMod1
+Global $gidEditIdx
+Global $gidBtnINI
+
+Func CreateMainGUI()
+    $ghGUI = GUICreate("OneFileTxt v" & $version, 620, 600)
+
+    $gidBtnINI = GUICtrlCreateButton("INI", 10, 10, 80, 30)
+
+    GUICtrlCreateLabel("extIncl", 10, 50, 60, 20)
+    GUICtrlCreateInput(Settings_Get("ExtIncl"), 70, 48, 200, 22)
+
+    GUICtrlCreateLabel("extExcl", 280, 50, 60, 20)
+    GUICtrlCreateInput(Settings_Get("ExtExcl"), 340, 48, 200, 22)
+
+    GUICtrlCreateLabel("extUse", 10, 80, 60, 20)
+    GUICtrlCreateInput(Settings_Get("ExtUse"), 70, 78, 470, 22)
+
+    GUICtrlCreateLabel("Index", 10, 110, 50, 20)
+    $gidEditIdx = GUICtrlCreateInput(Settings_Get("Index"), 60, 108, 80, 25)
+    GUICtrlCreateButton("+1", 145, 108, 40, 25)
+
+    Local $y = 140
+    For $i = 0 To 2
+        If $gaSetActive[$i] Then
+            GUICtrlCreateLabel("Set" & $i, 10, $y, 40, 20)
+            $y += 25
+
+            GUICtrlCreateButton("Parent" & $i, 10, $y, 100, 25)
+            $y += 30
+
+            GUICtrlCreateButton("SubDir" & $i, 10, $y, 100, 25)
+            $y += 30
+
+            GUICtrlCreateButton("File" & $i, 10, $y, 100, 25)
+            $y += 40
+        EndIf
+    Next
+
+    $gidBtnMod0 = GUICtrlCreateButton("MOD0 Pack", 10, $y, 180, 40)
+    $gidBtnMod1 = GUICtrlCreateButton("MOD1 Unpack", 200, $y, 180, 40)
+    GUICtrlCreateButton("MOD2 Save", 390, $y, 180, 40)
+
+    GUICtrlCreateButton("CLOSE", 10, $y + 50, 560, 40)
+
+    GUISetState(@SW_SHOW, $ghGUI)
+EndFunc
+////marker_end file GuiCore.au3
+
+////marker_begin file FileFolderPack.au3
+Func FileFolderPack_Mod0()
+    Local $sIndex = Settings_Get("Index")
+    MsgBox(0, "v" & $version, "Pack Set0 -> File" & $sIndex)
+EndFunc
+
+Func FileFolderPack_Mod1()
+    MsgBox(0, "v" & $version, "Unpack File -> Set1")
+EndFunc
+////marker_end file FileFolderPack.au3
+;;;

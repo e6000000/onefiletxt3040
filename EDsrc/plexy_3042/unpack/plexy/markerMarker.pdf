@@ -1,0 +1,21 @@
+
+  ;;// TXTmarkerMarker.txt.pdf
+////marker_begin file aa\a1.txt
+1  aa  // a1.txt       //2
+////marker_end file aa\a1.txt
+
+////marker_begin file aa\a2.txt
+2  aa // a2.txt       //3
+////marker_end file aa\a2.txt
+
+////marker_begin file bb\b1.txt
+1  bb  b1.txt     //4
+////marker_end file bb\b1.txt
+
+////marker_begin file bb\bbb\b1.txt
+1  bb // bbb // b1.txt      //5
+////marker_end file bb\bbb\b1.txt
+
+////marker_begin file s0.txt
+1  s0  s0.txt    //1
+////marker_end file s0.txt
