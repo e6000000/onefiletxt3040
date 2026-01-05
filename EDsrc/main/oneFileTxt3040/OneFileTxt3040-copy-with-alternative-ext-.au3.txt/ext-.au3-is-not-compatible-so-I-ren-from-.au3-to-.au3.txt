@@ -1,0 +1,5 @@
+The AI ​​and other apps reject the file extension ".au3". Therefore, all files in this folder were copied and the extension was changed from ".au3" to ".au3.txt". Windows 10 AutoIt is not always supported. I'm sure everyone can understand this and treat files with the extension ".au3.txt" correctly as AutoIt code ".au3". Is that clear? Or ask me, I know :-)
+
+
+
+

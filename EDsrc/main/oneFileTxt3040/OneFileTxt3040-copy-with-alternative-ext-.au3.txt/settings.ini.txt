@@ -1,0 +1,134 @@
+[Session]
+Initialized=1
+
+; Module ON/OFF Switches (3x)
+Set0Active=1
+Set1Active=1
+Set2Active=0
+
+; Set0 - MOD0 Pack (3 fields)
+Set0_Folder=D:/1p/su
+Set0_SubDir=su
+Set0_File=D:/1p/su_226/pack/1file.txt
+
+; Set1 - MOD1 Unpack (3 fields)
+Set1_Folder=D:/1p/su_226/unpack/su
+Set1_SubDir=D:\1p\s
+Set1_File=D:/1p/su_226/pack/1file.txt
+
+; Set2 - MOD2-UNI Universal (3 fields)
+Set2_Folder=
+Set2_SubDir=
+Set2_File=
+
+; Extensions (3x)
+ExtInclude=.ini.au3.txt.css
+ExtExclude=.npn
+ExtFilter=ini.au3.txt.css
+
+; Index (1x)
+Index=226
+
+; Other
+Mode=0
+AddMarkerComments=0
+MarkerUseTyp1json=0
+InParent=Q:\examplepath
+InSub=examplepath
+OutParent=
+OutSub=
+AllCodeFile=Q:\examplepath\1021_1fileTxtIn1\1file.txt
+AllCodeFileRead=
+
+[Metadata]
+NextPresetNumber=4
+
+[0]
+; Example Preset with NEW field names
+
+; Module ON/OFF Switches (3x)
+Set0Active=1
+Set1Active=1
+Set2Active=0
+
+; Set0 - MOD0 Pack (3 fields)
+Set0_Folder=D:/myproject/source
+Set0_SubDir=source
+Set0_File=D:/myproject/source_152/pack/1file.txt
+
+; Set1 - MOD1 Unpack (3 fields)
+Set1_Folder=D:/myproject/source_152/unpack/source
+Set1_SubDir=source
+Set1_File=D:/myproject/source_152/pack/1file.txt
+
+; Set2 - MOD2-UNI Universal (3 fields)
+Set2_Folder=D:/custom
+Set2_SubDir=custom
+Set2_File=D:/custom/myfile.txt
+
+; Extensions (3x)
+ExtInclude=.ini.au3.txt.css.ps1.json.mhtml.session
+ExtExclude=.png.ico.jpg.jpeg
+ExtFilter=ini.au3.txt.css.ps1.json.mhtml.session
+
+; Index (1x)
+Index=152
+
+; Other
+Mode=0
+AddMarkerComments=0
+MarkerUseTyp1json=0
+[1]
+InParent=Q:\examplepath
+InSub=examplepath
+OutParent=
+OutSub=
+AllCodeFile=Q:\examplepath\1021_1fileTxtIn1\1file.txt
+AllCodeFileRead=
+ExtInclude=.ini.au3.txt.css
+ExtExclude=.npn
+ExtFilter=ini.au3.txt.css
+AddMarkerComments=0
+Mode=0
+Index=13
+MarkerUseTyp1json=0
+[2]
+Set0Active=1
+Set1Active=1
+Set2Active=0
+Set0_Folder=D:/1p/s
+Set0_SubDir=D:\1p\s
+Set0_File=D:/1p/s_13/pack/1file.txt
+Set1_Folder=D:/1p/s_13/unpack/s
+Set1_SubDir=D:\1p\s
+Set1_File=D:/1p/s_13/pack/1file.txt
+Set2_Folder=
+Set2_SubDir=
+Set2_File=
+ExtInclude=.ini.au3.txt.css
+ExtExclude=.npn
+ExtFilter=ini.au3.txt.css
+Index=13
+Mode=0
+AddMarkerComments=0
+MarkerUseTyp1json=0
+[3]
+Set0Active=1
+Set1Active=1
+Set2Active=0
+Set0_Folder=D:/1p/s
+Set0_SubDir=D:\1p\s
+Set0_File=D:/1p/s_13/pack/1file.txt
+Set1_Folder=D:/1p/s_13/unpack/s
+Set1_SubDir=D:\1p\s
+Set1_File=D:/1p/s_13/pack/1file.txt
+Set2_Folder=
+Set2_SubDir=
+Set2_File=
+ExtInclude=.ini.au3.txt.css
+ExtExclude=.npn
+ExtFilter=ini.au3.txt.css
+Index=13
+Mode=0
+AddMarkerComments=0
+MarkerUseTyp1json=0
