@@ -1,21 +1,17 @@
 ;===============================================================================
-; Main_1FileTxt_3032.au3
-; Radically simplified folder/file logic with ConsoleWrite logging
+; Main_1FileTxt_3040.au3
+; simplified file logic with logging // idxq number: ini index=
 ;===============================================================================
-; Changelog 3032:
-;   - Button names: Folder0, SubDir0, File0 (no more "...")
-;   - MOD0: Input Folder0 -> auto-calc SubDir0, File0
-;   - MOD1: Copy from MOD0, extract to parent/sub_idx/sub/
-;   - ConsoleWrite logging everywhere
-;   - Local vars at func start, no Const 
+; Changelog 3040:
+;~
+;~
+;~
+;~
 ;===============================================================================
 
-;===============================================================================
-; GLOBALS
-;===============================================================================
 Global $g_hGUI
 Global $g_aConfig, $g_aSettings
-Global $g_aSetActive[3] = [True, True, True]
+Global $g_aSetActive[3] = [True, True, False]  ; Default: Set0=ON, Set1=ON, Set2=OFF
 Global $g_aInputSets[3][6]
 
 ; GUI Controls
@@ -25,6 +21,13 @@ Global $g_idBtnUpdInc, $g_idBtnUpdExc
 Global $g_idEditIdx, $g_idBtnIdxPlus
 Global $g_idBtnMod0, $g_idBtnMod1, $g_idBtnMod2Uni, $g_idBtnExit
 Global $g_iMode = 0
+Global $dbgg   ;;//  DEBUGG
+$dbgg=1
+Global $ccc ,$ClickLineConsoleWrite="If $dbgg then Local " & _
+",$w=ConsoleWrite(@CRLF&'---'&@ScriptFullPath&'---'&@CRLF)" & _
+"$w=ConsoleWrite('@@ Debug(' & @ScriptLineNumber & ') :')" & _
+",$w=ConsoleWrite",$ccc=$ClickLineConsoleWrite
+;ToDo on sam points - please add clickable line numbers  and script file name - ;;//  damit syntax ```ConsoleWrite('@@ Debug(' & @ScriptLineNumber & ') : ....')``` sind alle folgenden line number clickbar :-)
 
 ;===============================================================================
 ; INCLUDES
@@ -45,7 +48,11 @@ Global $g_iMode = 0
 ;===============================================================================
 ; MAIN
 ;===============================================================================
-ConsoleWrite(@ScriptFullPath & ' ' & @ScriptLineNumber & ' === START ===' & @CRLF)
+
+
+
+
+
 Init()
 CreateGUI()
 GUILoop()
@@ -56,7 +63,15 @@ GUILoop()
 Func Init()
 	Local $i, $sActive
 
-	ConsoleWrite(@ScriptFullPath & ' ' & @ScriptLineNumber & ' Init: Start' & @CRLF)
+
+	; tst  click line number **************************************************************************
+	If $dbgg then Local              $w=ConsoleWrite(@CRLF&'---'&@ScriptFullPath&'---'&@CRLF)      ,     $w=ConsoleWrite('@@ Debug(' & @ScriptLineNumber & ') :')          ,          $w=ConsoleWrite        ('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+	ConsoleWrite(@CRLF&@CRLF&'>---' & @ScriptFullPath &    @CRLF& @CRLF &'-===-START-===-' & @CRLF)
+	If $dbgg then Local              $w=ConsoleWrite(@CRLF&'---'&@ScriptFullPath&'---'&@CRLF)      ,     $w=ConsoleWrite('@@ Debug(' & @ScriptLineNumber & ') :')          ,          $w=ConsoleWrite        ('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+	ConsoleWrite(@CRLF & @CRLF & @CRLF & @CRLF)
+	ConsoleWrite('@@ Debug(' & @ScriptLineNumber & ') :  Init: Start   ' & @CRLF)
+	; tst  click line number end **************************************************************************
+
 
 	$g_aConfig = SettingsINI_Init(@ScriptDir & "\settings.ini")
 	$g_aSettings = SettingsINI_LoadFromINI($g_aConfig, "Session")
@@ -69,10 +84,16 @@ Func Init()
 		SettingsINI_SetValue($g_aSettings, "ExtInclude", ".au3.txt.md")
 	EndIf
 
-	; Load SetActive flags
+	; Load SetActive flags with defaults: Set0=1, Set1=1, Set2=0
 	For $i = 0 To 2
 		$sActive = SettingsINI_GetValue($g_aSettings, "Set" & $i & "Active")
-		If $sActive <> "" Then $g_aSetActive[$i] = ($sActive = "1")
+		If $sActive <> "" Then
+			$g_aSetActive[$i] = ($sActive = "1")
+		Else
+			; Default: Set0 and Set1 active, Set2 inactive
+			$g_aSetActive[$i] = ($i = 0 Or $i = 1)
+			SettingsINI_SetValue($g_aSettings, "Set" & $i & "Active", $g_aSetActive[$i] ? "1" : "0")
+		EndIf
 		ConsoleWrite(@ScriptFullPath & ' ' & @ScriptLineNumber & ' Set' & $i & 'Active: ' & $g_aSetActive[$i] & @CRLF)
 	Next
 
@@ -171,20 +192,17 @@ Func CreateInputSet($iSetIdx, $iX, $iY)
 	GUICtrlSetFont(-1, 9, 600)
 	$iY += 22
 
-	; Get values
+	; Get values from settings
 	$sFolder = SettingsINI_GetValue($g_aSettings, "Set" & $iSetIdx & "_Folder")
 	$sSubDir = SettingsINI_GetValue($g_aSettings, "Set" & $iSetIdx & "_SubDir")
 	$sFile = SettingsINI_GetValue($g_aSettings, "Set" & $iSetIdx & "_File")
 
-;~    ; old version with
-;~ 	; Input Folder Parent ---
-;~ 	GUICtrlCreateLabel("Input Folder Parent (Mode 0):", $iLeft, $iTop, 300, 20)
-;~ 	$idInputInParent = GUICtrlCreateInput(_GetSetting($aSettings, 'InParent'), $iLeft, $iTop + 20, $iWidthInput, 25)
-;~ 	$idBtnSelInParent = GUICtrlCreateButton("Dir", $iBtnX, $iTop + 20, $iWidthBtn, 25)
-;~ 	$iTop += 50
-;~     ; old version end
+	; Add trailing slash for folder display
+	If $sFolder <> "" And Not StringRight($sFolder, 1) = "/" Then
+		$sFolder &= "/"
+	EndIf
 
-
+	ConsoleWrite(@ScriptFullPath & ' ' & @ScriptLineNumber & ' CreateInputSet Set' & $iSetIdx & ': Folder=' & $sFolder & ', SubDir=' & $sSubDir & ', File=' & $sFile & @CRLF)
 
 	; Folder Input
 	GUICtrlCreateLabel("Folder" & $iSetIdx & ":", $iX, $iY, 80, 18)
@@ -245,8 +263,9 @@ Func GUILoop()
 			Case $g_idBtnUpdInc, $g_idBtnUpdExc
 				CalcExtFilter()
 				UpdateAllFields()
+				CreateCalculatedFolders()
 				SaveAll()
-				ShowTooltip1("Filter updated!")
+				ShowTooltip1("Filter updated! Folders created!")
 
 			Case $g_idBtnIdxPlus
 				$iCurrent = Int(GUICtrlRead($g_idEditIdx))
@@ -286,7 +305,7 @@ Func HandleInputSetButtons($iMsg)
 
 		For $j = 0 To 5 Step 2
 			If $iMsg = $g_aInputSets[$i][$j + 1] Then
-				ConsoleWrite(@ScriptFullPath & ' ' & @ScriptLineNumber & ' Button pressed: Set' & $i & ' Field' & $j & @CRLF)
+				ConsoleWrite(@ScriptFullPath & ' ' & @ScriptLineNumber & @TAB   &' Button pressed: Set' & $i & ' Field' & $j & @CRLF)
 
 				$sInitDir = @WorkingDir
 
@@ -427,6 +446,43 @@ Func UpdateSet1Fields($iIdx)
 	ConsoleWrite(@ScriptFullPath & ' ' & @ScriptLineNumber & ' MOD1 idx: ' & $iIdx & ' folder1: ' & $sExtractFolder & @CRLF)
 EndFunc
 
+;-------------------------------------------------------------------------------
+; Create calculated pack and unpack folders
+;-------------------------------------------------------------------------------
+Func CreateCalculatedFolders()
+	Local $sFile0, $sFile1, $sPackDir, $sUnpackDir
+
+	ConsoleWrite(@ScriptFullPath & ' ' & @ScriptLineNumber & ' CreateCalculatedFolders: Start' & @CRLF)
+
+	; Create pack folder for Set0 (MOD0)
+	If $g_aSetActive[0] Then
+		$sFile0 = GUICtrlRead($g_aInputSets[0][4])
+		If $sFile0 <> "" Then
+			$sPackDir = PathToOS(ExtractDirectory($sFile0))
+			If Not FileExists($sPackDir) Then
+				DirCreate($sPackDir)
+				ConsoleWrite(@ScriptFullPath & ' ' & @ScriptLineNumber & ' Created pack folder: ' & $sPackDir & @CRLF)
+			EndIf
+		EndIf
+	EndIf
+
+	; Create unpack folder for Set1 (MOD1)
+	If $g_aSetActive[1] Then
+		$sFile1 = GUICtrlRead($g_aInputSets[1][4])
+		If $sFile1 <> "" Then
+			; Get unpack folder from File1
+			Local $sExtractFolder = CalcExtractFolder($sFile1)
+			$sUnpackDir = PathToOS($sExtractFolder)
+			If Not FileExists($sUnpackDir) Then
+				DirCreate($sUnpackDir)
+				ConsoleWrite(@ScriptFullPath & ' ' & @ScriptLineNumber & ' Created unpack folder: ' & $sUnpackDir & @CRLF)
+			EndIf
+		EndIf
+	EndIf
+
+	ConsoleWrite(@ScriptFullPath & ' ' & @ScriptLineNumber & ' CreateCalculatedFolders: Complete' & @CRLF)
+EndFunc
+
 ;===============================================================================
 ; MOD0: PACK
 ;===============================================================================
@@ -505,9 +561,13 @@ Func ExecuteMod0()
 	; Auto MOD1 Verify
 	$sExtractFolder = CalcExtractFolder($s1File)
 
-	; Update Set1 Folder1
+	; Update Set1 Folder1 with trailing slash for display
 	If $g_aSetActive[1] Then
-		GUICtrlSetData($g_aInputSets[1][0], $sExtractFolder)
+		Local $sDisplay = $sExtractFolder
+		If Not StringRight($sDisplay, 1) = "/" Then
+			$sDisplay &= "/"
+		EndIf
+		GUICtrlSetData($g_aInputSets[1][0], $sDisplay)
 		SettingsINI_SetValue($g_aSettings, "Set1_Folder", $sExtractFolder)
 	EndIf
 
@@ -546,9 +606,13 @@ Func ExecuteMod1Verify()
 	; Calculate extraction folder
 	$sExtractFolder = CalcExtractFolder($s1File)
 
-	; Update Set1 Folder1 display
+	; Update Set1 Folder1 display with trailing slash
 	If $g_aSetActive[1] Then
-		GUICtrlSetData($g_aInputSets[1][0], $sExtractFolder)
+		Local $sDisplay = $sExtractFolder
+		If Not StringRight($sDisplay, 1) = "/" Then
+			$sDisplay &= "/"
+		EndIf
+		GUICtrlSetData($g_aInputSets[1][0], $sDisplay)
 		SettingsINI_SetValue($g_aSettings, "Set1_Folder", $sExtractFolder)
 		SaveAll()
 	EndIf
@@ -655,7 +719,9 @@ Func CalcExtFilter()
 EndFunc
 
 Func SaveAll()
-	Local $i
+	Local $i, $sFolder, $sSubDir, $sFile
+
+	ConsoleWrite(@ScriptFullPath & ' ' & @ScriptLineNumber & ' SaveAll: Start' & @CRLF)
 
 	SettingsINI_SetValue($g_aSettings, "ExtInclude", GUICtrlRead($g_idEditExtInc))
 	SettingsINI_SetValue($g_aSettings, "ExtExclude", GUICtrlRead($g_idEditExtExc))
@@ -663,20 +729,38 @@ Func SaveAll()
 	SettingsINI_SetValue($g_aSettings, "Index", GUICtrlRead($g_idEditIdx))
 	SettingsINI_SetValue($g_aSettings, "Mode", String($g_iMode))
 
+	; Save all 9 fields (3 sets × 3 fields)
 	For $i = 0 To 2
 		SettingsINI_SetValue($g_aSettings, "Set" & $i & "Active", $g_aSetActive[$i] ? "1" : "0")
+
 		If $g_aSetActive[$i] Then
-			SettingsINI_SetValue($g_aSettings, "Set" & $i & "_Folder", GUICtrlRead($g_aInputSets[$i][0]))
-			SettingsINI_SetValue($g_aSettings, "Set" & $i & "_SubDir", GUICtrlRead($g_aInputSets[$i][2]))
-			SettingsINI_SetValue($g_aSettings, "Set" & $i & "_File", GUICtrlRead($g_aInputSets[$i][4]))
+			; Active set: Read from GUI controls
+			$sFolder = GUICtrlRead($g_aInputSets[$i][0])
+			$sSubDir = GUICtrlRead($g_aInputSets[$i][2])
+			$sFile = GUICtrlRead($g_aInputSets[$i][4])
+
+			; Remove trailing slash from folder before saving
+			$sFolder = StringRegExpReplace($sFolder, "[/\\]+$", "")
+
+			SettingsINI_SetValue($g_aSettings, "Set" & $i & "_Folder", $sFolder)
+			SettingsINI_SetValue($g_aSettings, "Set" & $i & "_SubDir", $sSubDir)
+			SettingsINI_SetValue($g_aSettings, "Set" & $i & "_File", $sFile)
+
+			ConsoleWrite(@ScriptFullPath & ' ' & @ScriptLineNumber & ' SaveAll Set' & $i & ': Folder=' & $sFolder & ', SubDir=' & $sSubDir & ', File=' & $sFile & @CRLF)
+		Else
+			; Inactive set: Values remain in $g_aSettings (not overwritten)
+			ConsoleWrite(@ScriptFullPath & ' ' & @ScriptLineNumber & ' SaveAll Set' & $i & ': Inactive (preserved)' & @CRLF)
 		EndIf
 	Next
 
 	SettingsINI_SaveToINI($g_aConfig, $g_aSettings, "Session")
+	ConsoleWrite(@ScriptFullPath & ' ' & @ScriptLineNumber & ' SaveAll: Complete' & @CRLF)
 EndFunc
 
 Func LoadAll()
-	Local $i
+	Local $i, $sFolder, $sSubDir, $sFile
+
+	ConsoleWrite(@ScriptFullPath & ' ' & @ScriptLineNumber & ' LoadAll: Start' & @CRLF)
 
 	GUICtrlSetData($g_idEditExtInc, SettingsINI_GetValue($g_aSettings, "ExtInclude"))
 	GUICtrlSetData($g_idEditExtExc, SettingsINI_GetValue($g_aSettings, "ExtExclude"))
@@ -684,13 +768,29 @@ Func LoadAll()
 	GUICtrlSetData($g_idEditIdx, SettingsINI_GetValue($g_aSettings, "Index"))
 	CalcExtFilter()
 
+	; Load all 9 fields (3 sets × 3 fields) into GUI for active sets
 	For $i = 0 To 2
 		If $g_aSetActive[$i] Then
-			GUICtrlSetData($g_aInputSets[$i][0], SettingsINI_GetValue($g_aSettings, "Set" & $i & "_Folder"))
-			GUICtrlSetData($g_aInputSets[$i][2], SettingsINI_GetValue($g_aSettings, "Set" & $i & "_SubDir"))
-			GUICtrlSetData($g_aInputSets[$i][4], SettingsINI_GetValue($g_aSettings, "Set" & $i & "_File"))
+			$sFolder = SettingsINI_GetValue($g_aSettings, "Set" & $i & "_Folder")
+			$sSubDir = SettingsINI_GetValue($g_aSettings, "Set" & $i & "_SubDir")
+			$sFile = SettingsINI_GetValue($g_aSettings, "Set" & $i & "_File")
+
+			; Add trailing slash for folder display
+			If $sFolder <> "" And Not StringRight($sFolder, 1) = "/" Then
+				$sFolder &= "/"
+			EndIf
+
+			GUICtrlSetData($g_aInputSets[$i][0], $sFolder)
+			GUICtrlSetData($g_aInputSets[$i][2], $sSubDir)
+			GUICtrlSetData($g_aInputSets[$i][4], $sFile)
+
+			ConsoleWrite(@ScriptFullPath & ' ' & @ScriptLineNumber & ' LoadAll Set' & $i & ': Folder=' & $sFolder & ', SubDir=' & $sSubDir & ', File=' & $sFile & @CRLF)
+		Else
+			ConsoleWrite(@ScriptFullPath & ' ' & @ScriptLineNumber & ' LoadAll Set' & $i & ': Inactive (not displayed)' & @CRLF)
 		EndIf
 	Next
+
+	ConsoleWrite(@ScriptFullPath & ' ' & @ScriptLineNumber & ' LoadAll: Complete' & @CRLF)
 EndFunc
 
 Func aSub(ByRef $aSource, ByRef $aExclude)

@@ -60,94 +60,77 @@ Func settingsArrayTest()
 EndFunc   ;==>settingsArrayTest
 
 Func SettingsINI_CreateArray()
-	; Create empty settings array
+	; Create empty settings array with NEW field names
 	; Returns: Settings array with default structure
 
-	Local $aSettings[33][2] = [[1, 2], [5, 6]]
+	Local $aSettings[30][2]
 
 	$aSettings[0][0] = "SettingsArray"
-	$aSettings[0][1] = 21    ; Count of settings
+	$aSettings[0][1] = 20    ; Count of settings
 
-	; Initialize with empty values
-	$aSettings[1][0] = "InParent"
-	$aSettings[1][1] = ""
+	; Module ON/OFF Switches (3x)
+	$aSettings[1][0] = "Set0Active"
+	$aSettings[1][1] = "1"
 
-	$aSettings[2][0] = "InSub"
-	$aSettings[2][1] = ""
+	$aSettings[2][0] = "Set1Active"
+	$aSettings[2][1] = "1"
 
-	$aSettings[3][0] = "OutParent"
-	$aSettings[3][1] = ""
+	$aSettings[3][0] = "Set2Active"
+	$aSettings[3][1] = "0"
 
-	$aSettings[4][0] = "OutSub"
+	; Set0 - MOD0 Pack (3 fields)
+	$aSettings[4][0] = "Set0_Folder"
 	$aSettings[4][1] = ""
 
-	$aSettings[5][0] = "AllCodeFile"
+	$aSettings[5][0] = "Set0_SubDir"
 	$aSettings[5][1] = ""
 
-	$aSettings[6][0] = "ExtInclude"
+	$aSettings[6][0] = "Set0_File"
 	$aSettings[6][1] = ""
 
-	$aSettings[7][0] = "ExtExclude"
+	; Set1 - MOD1 Unpack (3 fields)
+	$aSettings[7][0] = "Set1_Folder"
 	$aSettings[7][1] = ""
 
-	$aSettings[8][0] = "ExtFilter"
+	$aSettings[8][0] = "Set1_SubDir"
 	$aSettings[8][1] = ""
 
-	$aSettings[9][0] = "AddMarkerComments"
-	$aSettings[9][1] = "0"
+	$aSettings[9][0] = "Set1_File"
+	$aSettings[9][1] = ""
 
-	$aSettings[10][0] = "Mode"
-	$aSettings[10][1] = "0"
+	; Set2 - MOD2-UNI Universal (3 fields)
+	$aSettings[10][0] = "Set2_Folder"
+	$aSettings[10][1] = ""
 
-	$aSettings[11][0] = "Index"
-	$aSettings[11][1] = "1001"
+	$aSettings[11][0] = "Set2_SubDir"
+	$aSettings[11][1] = ""
 
-	$aSettings[12][0] = "FolderIn"
+	$aSettings[12][0] = "Set2_File"
 	$aSettings[12][1] = ""
 
-	$aSettings[13][0] = "FolderOut"
+	; Extensions (3x)
+	$aSettings[13][0] = "ExtInclude"
 	$aSettings[13][1] = ""
 
-	$aSettings[14][0] = "ResultList"
+	$aSettings[14][0] = "ExtExclude"
 	$aSettings[14][1] = ""
 
-	$aSettings[15][0] = "MarkerUseTyp1json"
-	$aSettings[15][1] = "0"
+	$aSettings[15][0] = "ExtFilter"
+	$aSettings[15][1] = ""
 
-	$aSettings[16][0] = "MarkerBegin"
-	$aSettings[16][1] = "////marker_begin"
+	; Index (1x)
+	$aSettings[16][0] = "Index"
+	$aSettings[16][1] = "1001"
 
-	$aSettings[17][0] = "MarkerEnd"
-	$aSettings[17][1] = "////marker_end"
+	; Other
+	$aSettings[17][0] = "Mode"
+	$aSettings[17][1] = "0"
 
-	$aSettings[18][0] = "MarkerSeparator"
-	$aSettings[18][1] = " "
+	$aSettings[18][0] = "AddMarkerComments"
+	$aSettings[18][1] = "0"
 
-	$aSettings[20][0] = "SUBdefault"
-	$aSettings[20][1] = "sub"
-
-	$aSettings[21][0] = "Reserved1"
-	$aSettings[21][1] = ""
-
-	$aSettings[22][0] = "Reserved2"
-	$aSettings[22][1] = ""
-
-	$aSettings[23][0] = "Reserved3"
-	$aSettings[23][1] = ""
-
-	$aSettings[24][0] = "Reserved4"
-	$aSettings[24][1] = ""
-
-	$aSettings[25][0] = "Reserved5"
-	$aSettings[25][1] = ""
-
-	$aSettings[26][0] = "Reserved6"
-	$aSettings[26][1] = ""
-
-	$aSettings[27][0] = "Reserved7"
-	$aSettings[27][1] = ""
-
-
+	$aSettings[19][0] = "MarkerUseTyp1json"
+	$aSettings[19][1] = "0"
 
 	Return $aSettings
 EndFunc   ;==>SettingsINI_CreateArray
@@ -195,7 +178,7 @@ EndFunc   ;==>SettingsINI_SetValue
 ;///////////////////////////////////////////////////////////////////////////////
 
 Func SettingsINI_LoadFromINI($aConfig, $sSectionName = "")
-	; Load settings from INI file into array
+	; Load settings from INI file into array with NEW field names
 	; Parameters:
 	;   $aConfig - Module config array (from SettingsINI_Init)
 	;   $sSectionName - Section name (default: "Session")
@@ -206,25 +189,44 @@ Func SettingsINI_LoadFromINI($aConfig, $sSectionName = "")
 
 	Local $aSettings = SettingsINI_CreateArray()
 
-	; Read all keys from section
-	SettingsINI_SetValue($aSettings, "InParent", IniRead($sIniPath, $sSectionName, "InParent", ""))
-	SettingsINI_SetValue($aSettings, "InSub", IniRead($sIniPath, $sSectionName, "InSub", ""))
-	SettingsINI_SetValue($aSettings, "OutParent", IniRead($sIniPath, $sSectionName, "OutParent", ""))
-	SettingsINI_SetValue($aSettings, "OutSub", IniRead($sIniPath, $sSectionName, "OutSub", ""))
-	SettingsINI_SetValue($aSettings, "AllCodeFile", IniRead($sIniPath, $sSectionName, "AllCodeFile", ""))
+	; Module ON/OFF Switches (3x)
+	SettingsINI_SetValue($aSettings, "Set0Active", IniRead($sIniPath, $sSectionName, "Set0Active", "1"))
+	SettingsINI_SetValue($aSettings, "Set1Active", IniRead($sIniPath, $sSectionName, "Set1Active", "1"))
+	SettingsINI_SetValue($aSettings, "Set2Active", IniRead($sIniPath, $sSectionName, "Set2Active", "0"))
+
+	; Set0 - MOD0 Pack (3 fields)
+	SettingsINI_SetValue($aSettings, "Set0_Folder", IniRead($sIniPath, $sSectionName, "Set0_Folder", ""))
+	SettingsINI_SetValue($aSettings, "Set0_SubDir", IniRead($sIniPath, $sSectionName, "Set0_SubDir", ""))
+	SettingsINI_SetValue($aSettings, "Set0_File", IniRead($sIniPath, $sSectionName, "Set0_File", ""))
+
+	; Set1 - MOD1 Unpack (3 fields)
+	SettingsINI_SetValue($aSettings, "Set1_Folder", IniRead($sIniPath, $sSectionName, "Set1_Folder", ""))
+	SettingsINI_SetValue($aSettings, "Set1_SubDir", IniRead($sIniPath, $sSectionName, "Set1_SubDir", ""))
+	SettingsINI_SetValue($aSettings, "Set1_File", IniRead($sIniPath, $sSectionName, "Set1_File", ""))
+
+	; Set2 - MOD2-UNI Universal (3 fields)
+	SettingsINI_SetValue($aSettings, "Set2_Folder", IniRead($sIniPath, $sSectionName, "Set2_Folder", ""))
+	SettingsINI_SetValue($aSettings, "Set2_SubDir", IniRead($sIniPath, $sSectionName, "Set2_SubDir", ""))
+	SettingsINI_SetValue($aSettings, "Set2_File", IniRead($sIniPath, $sSectionName, "Set2_File", ""))
+
+	; Extensions (3x)
 	SettingsINI_SetValue($aSettings, "ExtInclude", IniRead($sIniPath, $sSectionName, "ExtInclude", ""))
 	SettingsINI_SetValue($aSettings, "ExtExclude", IniRead($sIniPath, $sSectionName, "ExtExclude", ""))
 	SettingsINI_SetValue($aSettings, "ExtFilter", IniRead($sIniPath, $sSectionName, "ExtFilter", ""))
-	SettingsINI_SetValue($aSettings, "AddMarkerComments", IniRead($sIniPath, $sSectionName, "AddMarkerComments", "0"))
-	SettingsINI_SetValue($aSettings, "Mode", IniRead($sIniPath, $sSectionName, "Mode", "0"))
+
+	; Index (1x)
 	SettingsINI_SetValue($aSettings, "Index", IniRead($sIniPath, $sSectionName, "Index", "1000"))
+
+	; Other
+	SettingsINI_SetValue($aSettings, "Mode", IniRead($sIniPath, $sSectionName, "Mode", "0"))
+	SettingsINI_SetValue($aSettings, "AddMarkerComments", IniRead($sIniPath, $sSectionName, "AddMarkerComments", "0"))
 	SettingsINI_SetValue($aSettings, "MarkerUseTyp1json", IniRead($sIniPath, $sSectionName, "MarkerUseTyp1json", "0"))
 
 	Return $aSettings
 EndFunc   ;==>SettingsINI_LoadFromINI
 
 Func SettingsINI_SaveToINI($aConfig, $aSettings, $sSectionName = "")
-	; Save settings array to INI file
+	; Save settings array to INI file with NEW field names
 	; Parameters:
 	;   $aConfig - Module config array
 	;   $aSettings - Settings array
@@ -234,22 +236,37 @@ Func SettingsINI_SaveToINI($aConfig, $aSettings, $sSectionName = "")
 	Local $sIniPath = $aConfig[1]
 	If $sSectionName = "" Then $sSectionName = $aConfig[2]
 
-	; Write all keys to section
-	IniWrite($sIniPath, $sSectionName, "InParent", SettingsINI_GetValue($aSettings, "InParent"))
-	IniWrite($sIniPath, $sSectionName, "InSub", SettingsINI_GetValue($aSettings, "InSub"))
-	IniWrite($sIniPath, $sSectionName, "OutParent", SettingsINI_GetValue($aSettings, "OutParent"))
-	IniWrite($sIniPath, $sSectionName, "OutSub", SettingsINI_GetValue($aSettings, "OutSub"))
-	IniWrite($sIniPath, $sSectionName, "AllCodeFile", SettingsINI_GetValue($aSettings, "AllCodeFile"))
-	;my add 1codeline different AllCodeFile for mod1 to read AllCodeFileRead
-	;newcode;
-	IniWrite($sIniPath, $sSectionName, "AllCodeFileRead", SettingsINI_GetValue($aSettings, "AllCodeFileRead"))
+	; Module ON/OFF Switches (3x)
+	IniWrite($sIniPath, $sSectionName, "Set0Active", SettingsINI_GetValue($aSettings, "Set0Active"))
+	IniWrite($sIniPath, $sSectionName, "Set1Active", SettingsINI_GetValue($aSettings, "Set1Active"))
+	IniWrite($sIniPath, $sSectionName, "Set2Active", SettingsINI_GetValue($aSettings, "Set2Active"))
 
+	; Set0 - MOD0 Pack (3 fields)
+	IniWrite($sIniPath, $sSectionName, "Set0_Folder", SettingsINI_GetValue($aSettings, "Set0_Folder"))
+	IniWrite($sIniPath, $sSectionName, "Set0_SubDir", SettingsINI_GetValue($aSettings, "Set0_SubDir"))
+	IniWrite($sIniPath, $sSectionName, "Set0_File", SettingsINI_GetValue($aSettings, "Set0_File"))
+
+	; Set1 - MOD1 Unpack (3 fields)
+	IniWrite($sIniPath, $sSectionName, "Set1_Folder", SettingsINI_GetValue($aSettings, "Set1_Folder"))
+	IniWrite($sIniPath, $sSectionName, "Set1_SubDir", SettingsINI_GetValue($aSettings, "Set1_SubDir"))
+	IniWrite($sIniPath, $sSectionName, "Set1_File", SettingsINI_GetValue($aSettings, "Set1_File"))
+
+	; Set2 - MOD2-UNI Universal (3 fields)
+	IniWrite($sIniPath, $sSectionName, "Set2_Folder", SettingsINI_GetValue($aSettings, "Set2_Folder"))
+	IniWrite($sIniPath, $sSectionName, "Set2_SubDir", SettingsINI_GetValue($aSettings, "Set2_SubDir"))
+	IniWrite($sIniPath, $sSectionName, "Set2_File", SettingsINI_GetValue($aSettings, "Set2_File"))
+
+	; Extensions (3x)
 	IniWrite($sIniPath, $sSectionName, "ExtInclude", SettingsINI_GetValue($aSettings, "ExtInclude"))
 	IniWrite($sIniPath, $sSectionName, "ExtExclude", SettingsINI_GetValue($aSettings, "ExtExclude"))
 	IniWrite($sIniPath, $sSectionName, "ExtFilter", SettingsINI_GetValue($aSettings, "ExtFilter"))
-	IniWrite($sIniPath, $sSectionName, "AddMarkerComments", SettingsINI_GetValue($aSettings, "AddMarkerComments"))
-	IniWrite($sIniPath, $sSectionName, "Mode", SettingsINI_GetValue($aSettings, "Mode"))
+
+	; Index (1x)
 	IniWrite($sIniPath, $sSectionName, "Index", SettingsINI_GetValue($aSettings, "Index"))
+
+	; Other
+	IniWrite($sIniPath, $sSectionName, "Mode", SettingsINI_GetValue($aSettings, "Mode"))
+	IniWrite($sIniPath, $sSectionName, "AddMarkerComments", SettingsINI_GetValue($aSettings, "AddMarkerComments"))
 	IniWrite($sIniPath, $sSectionName, "MarkerUseTyp1json", SettingsINI_GetValue($aSettings, "MarkerUseTyp1json"))
 
 	Return True
